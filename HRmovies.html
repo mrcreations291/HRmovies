@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HR Movies - Premium Streaming Service</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-red: #e50914;
+      --dark-bg: #0a0a0a;
+      --content-bg: #181818;
+      --accent-blue: #0072d2;
+      --text-primary: #ffffff;
+      --text-secondary: #a3a3a3;
+    }
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text-primary);
+      font-family: 'Open Sans', sans-serif;
+    }
+    h1, h2, h3 {
+      font-family: 'Bebas Neue', cursive;
+      letter-spacing: 2px;
+    }
+    .navbar {
+      background: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+      padding: 1.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 2.5rem;
+      color: var(--primary-red);
+    }
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .search-bar {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: none;
+      width: 250px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .profile-dropdown {
+      position: relative;
+    }
+    .profile-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 2rem;
+      background: var(--content-bg);
+      border-radius: 5px;
+      overflow: hidden;
+      display: none;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #333;
+    }
+    .dropdown-menu a:hover {
+      background: #333;
+    }
+    .auth-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: url('https://via.placeholder.com/1200x700?text=HR+Movies+Background') center/cover no-repeat;
+    }
+    .auth-box {
+      background: rgba(0,0,0,0.75);
+      padding: 4rem;
+      border-radius: 10px;
+      width: 400px;
+      text-align: center;
+    }
+    .auth-input, .auth-button {
+      width: 100%;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .auth-input {
+      background: #333;
+      color: white;
+    }
+    .auth-button {
+      background: var(--primary-red);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .content-section {
+      padding: 8rem 4rem 4rem;
+    }
+    .section-header {
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+    .movie-card {
+      background: var(--content-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .poster-container {
+      position: relative;
+      padding-top: 150%;
+    }
+    .movie-poster {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .card-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    }
+    .movie-title { font-size: 1.1rem; }
+    .movie-info {
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      color: var(--text-secondary);
+    }
+    .hd-badge {
+      background: var(--accent-blue);
+      padding: 0 5px;
+      border-radius: 3px;
+    }
+    .player-container {
+      padding: 8rem 2rem;
+    }
+    .video-player {
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%;
+      position: relative;
+    }
+    .video-player video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+    }
+    .player-controls {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .download-button {
+      background: var(--accent-blue);
+      border: none;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Auth Page -->
+<div id="auth-page" class="auth-container">
+  <div class="auth-box">
+    <h1>HR Movies</h1>
+    <input type="email" class="auth-input" placeholder="Email" id="email" />
+    <input type="password" class="auth-input" placeholder="Password" id="password" />
+    <button class="auth-button" onclick="login()">Login</button>
+  </div>
+</div>
+
+<!-- Main App -->
+<div id="main-content" style="display: none;">
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="logo">HR Movies</div>
+      <div class="nav-links">
+        <a href="#" onclick="showPage('home-page')">Home</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <input type="text" class="search-bar" placeholder="Search..." />
+      <div class="profile-dropdown">
+        <button class="profile-btn" onclick="toggleDropdown()">👤 Profile</button>
+        <div class="dropdown-menu" id="dropdown-menu">
+          <a href="#">My Account</a>
+          <a href="#" onclick="logout()">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section" id="home-page">
+    <h2 class="section-header">New Releases</h2>
+    <div class="movie-grid" id="movie-grid"></div>
+  </div>
+
+  <div id="streaming-page" style="display: none;">
+    <div class="player-container">
+      <div class="video-player" id="video-player"></div>
+      <div class="player-controls">
+        <button class="download-button" onclick="showPage('home-page')">← Back</button>
+        <button class="download-button">Download 1080p</button>
+        <button class="download-button">Download 720p</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const movies = [
+  { id: 1, title: "Mad square", year: 2025, rating: 8.1, duration: "2h 10m", hd: true, poster: "https://in.images.search.yahoo.com/images/view;_ylt=AwrKAlh67QRo69YuAzO9HAx.;_ylu=c2VjA3NyBHNsawNpbWcEb2lkA2UwNDBjOTlmM2JmMWYxMWMyY2FjZjFiZWVmOTU4MTRlBGdwb3MDMgRpdANiaW5n?back=https%3A%2F%2Fin.images.search.yahoo.com%2Fsearch%2Fimages%3Fp%3Dmad%2Bsquare%2Bposters%2Bhd%26type%3DE210IN714G0%26fr%3Dmcafee%26fr2%3Dpiv-web%26tab%3Dorganic%26ri%3D2&w=226&h=283&imgurl=images.filmibeat.com%2Fimg%2Fpopcorn%2Fmovie_posters%2Fmadsquare-20240918124621-23167.jpg&rurl=https%3A%2F%2Fwww.filmibeat.com%2Ftelugu%2Fmovies%2Fmad-square%2Fbox-office.html&size=92KB&p=mad+square+posters+hd&oid=e040c99f3bf1f11c2cacf1beef95814e&fr2=piv-web&fr=mcafee&tt=MAD+Square+Box+Office+Collection+%7C+Narne+Nithin+MAD+Square+Movie+Box+...&b=0&ni=21&no=2&ts=&tab=organic&sigr=vRwA5IjGUAgK&sigb=7x9wHOIPevvb&sigi=lw6OLd0.WOis&sigt=8x2pbMHKav.z&.crumb=t7qORtCoG/8&fr=mcafee&fr2=piv-web&type=E210IN714G0https://images.filmibeat.com/img/popcorn/movie_posters/madsquare-20240918124621-23167.jpg", video: "C:/Users/Rishi/OneDrive/Desktop/bapamma movies/Toonflex - Mad Square (2025) Telugu PRE-HD - 720p - x264.mkv" },
+  { id: 2, title: "Return of the Dragon", year: 2025, rating: 7.8, duration: "1h 50m", hd: false, poster: "https://via.placeholder.com/220x330?text=Dark+Alley", video: "C:/Users/Rishi/OneDrive/Desktop/bapamma movies/Toonflex - Return of the Dragon (2025) Telugu - HQ HDRip.mkv" },
+];
+
+function login() {
+  document.getElementById("auth-page").style.display = "none";
+  document.getElementById("main-content").style.display = "block";
+  renderMovies();
+}
+
+function logout() {
+  document.getElementById("main-content").style.display = "none";
+  document.getElementById("auth-page").style.display = "flex";
+}
+
+function showPage(pageId) {
+  document.querySelectorAll(".content-section, #streaming-page").forEach(p => p.style.display = "none");
+  document.getElementById(pageId).style.display = "block";
+}
+
+function toggleDropdown() {
+  const menu = document.getElementById("dropdown-menu");
+  menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.profile-btn')) {
+    const dropdown = document.getElementById("dropdown-menu");
+    if (dropdown) dropdown.style.display = "none";
+  }
+}
+
+function renderMovies() {
+  const container = document.getElementById("movie-grid");
+  container.innerHTML = movies.map(m => `
+    <div class="movie-card" onclick="playMovie(${m.id})">
+      <div class="poster-container">
+        <img src="${m.poster}" class="movie-poster" />
+        <div class="card-overlay">
+          <div class="movie-title">${m.title}</div>
+          <div class="movie-info">
+            <span>${m.year}</span>
+            ${m.hd ? '<span class="hd-badge">HD</span>' : ''}
+          </div>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+function playMovie(id) {
+  const movie = movies.find(m => m.id === id);
+  if (!movie) return;
+  showPage("streaming-page");
+  const player = document.getElementById("video-player");
+  player.innerHTML = `<video controls autoplay><source src="${movie.video}" type="video/mp4">Your browser does not support video.</video>`;
+}
+</script>
+</body>
+</html>
